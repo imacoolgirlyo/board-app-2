@@ -1,6 +1,6 @@
 ## TODO
 
-- [ ] Postgresql DB 연동
+- [x] Postgresql DB 연동
 - [ ] Board Entity 생성 및 Repository 추가
 - [ ] docker-compose.yml에 Postgresql, nestjs app 서비스 추가 -> `docker compose up` 으로 Postgresql, nestjs container 같이 실행시키기
 - [ ] React App 생성 후 dockerize (+ nginx)
