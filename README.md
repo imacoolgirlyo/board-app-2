@@ -8,6 +8,10 @@
 - [ ] k8s service 써보기
 
 ---
+- [ ] draft 게시글 생성
+- [ ] 게시글 특정시간에 업로드
+
+---
 
 - 11.30 (수) 목표
   - docker-compose에 Postgresql, nestjs service 추가해서 컨테이너 실행시키기
