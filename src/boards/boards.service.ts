@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { v1 as uuid } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Board as BoardEntity } from './board.entity';
 
 export interface Board {
   id: string;
@@ -9,22 +11,25 @@ export interface Board {
 
 @Injectable()
 export class BoardsService {
-  private boards: Board[] = [];
+  constructor(
+    @InjectRepository(BoardEntity)
+    private boardsRepository: Repository<BoardEntity>,
+  ) {}
 
-  getAllBoards() {
-    return this.boards;
+  async getAllBoards(): Promise<Board[]> {
+    return await this.boardsRepository.find();
   }
 
-  addBoard({
+  async addBoard({
     title,
     description,
   }: {
     title: string;
     description: string;
-  }): Board {
-    const board = { id: uuid(), title, description };
-    this.boards.push(board);
+  }): Promise<Board> {
+    const board = { title, description };
+    const saved = await this.boardsRepository.save(board);
 
-    return board;
+    return saved;
   }
 }
