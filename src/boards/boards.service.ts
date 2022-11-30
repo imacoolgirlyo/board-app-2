@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { v1 as uuid } from 'uuid';
+import { Board as BoardEntity } from './board.entity';
 
 export interface Board {
   id: string;
@@ -9,6 +12,11 @@ export interface Board {
 
 @Injectable()
 export class BoardsService {
+  constructor(
+    @InjectRepository(BoardEntity)
+    private boardRepository: Repository<BoardEntity>,
+  ) {}
+
   private boards: Board[] = [];
 
   getAllBoards() {
