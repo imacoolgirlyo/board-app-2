@@ -16,8 +16,8 @@ export class BoardsService {
     private boardRepository: Repository<BoardEntity>,
   ) {}
 
-  async getAllBoards(): Promise<Board[]> {
-    return await this.boardRepository.find();
+  getAllBoards(): Promise<Board[]> {
+    return this.boardRepository.find();
   }
 
   async addBoard({
