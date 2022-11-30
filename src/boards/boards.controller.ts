@@ -8,7 +8,7 @@ export class BoardsController {
 
   @Get()
   async getAllBoards(): Promise<Board[]> {
-    return await this.boardsService.getAllBoards();
+    return this.boardsService.getAllBoards();
   }
 
   @Post()
