@@ -1,14 +1,30 @@
 version: '3.9'
 networks:
-  default:
-    external: false
-    name: board-app-local
+  board-app-local:
 
 services:
+  main:
+    container_name: board-nestjs
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 5000:5000
+    networks:
+      - board-app-local
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:13.2
     container_name: board-postgres
     restart: always
+    networks:
+      - board-app-local
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
