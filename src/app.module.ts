@@ -7,7 +7,7 @@ import { BoardsModule } from './boards/boards.module';
     BoardsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'postgres',
+      host: 'localhost',
       port: 5432,
       username: 'postgres',
       password: 'postgres',
