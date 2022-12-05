@@ -7,12 +7,12 @@ export class BoardsController {
   constructor(private boardsService: BoardsService) {}
 
   @Get()
-  getAllBoards(): Board[] {
+  async getAllBoards(): Promise<Board[]> {
     return this.boardsService.getAllBoards();
   }
 
   @Post()
-  addBoard(@Req() request: Request): Board {
+  async addBoard(@Req() request: Request): Promise<Board> {
     const { title, description } = request.body;
     return this.boardsService.addBoard({ title, description });
   }

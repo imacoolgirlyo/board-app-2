@@ -11,7 +11,7 @@ import { BoardsModule } from './boards/boards.module';
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'board-postgres',
+      database: 'postgres',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
