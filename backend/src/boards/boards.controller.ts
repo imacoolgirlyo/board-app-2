@@ -1,5 +1,4 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { BoardsService, Board } from './boards.service';
 
 @Controller('boards')
@@ -12,8 +11,8 @@ export class BoardsController {
   }
 
   @Post()
-  async addBoard(@Req() request: Request): Promise<Board> {
-    const { title, description } = request.body;
+  async addBoard(@Body() body: any): Promise<Board> {
+    const { title, description } = body;
     return this.boardsService.addBoard({ title, description });
   }
 }
