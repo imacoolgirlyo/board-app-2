@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import { BoardsModule } from './boards/boards.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { BoardsModule } from './boards/boards.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
+    AuthModule,
   ],
   controllers: [],
   providers: [],
