@@ -8,6 +8,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
     command: npm run start:dev
     volumes:
       - ./backend:/usr/src/app
