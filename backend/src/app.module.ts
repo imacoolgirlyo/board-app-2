@@ -18,7 +18,7 @@ import { BoardsModule } from './boards/boards.module';
       synchronize: false,
     }),
     AuthModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [],
   providers: [],
