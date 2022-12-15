@@ -17,14 +17,10 @@ export class GoogleAuthController {
   @UseGuards(GoogleOauthGuard)
   googleAuthRedirect(@Req() req, @Res() res: Response) {
     const { accessToken } = this.jwtAuthService.login(req.user);
-    console.log('req.user: ', req.user);
-    // TODO: save User Data
     res.cookie('jwt', accessToken, {
       httpOnly: true,
       sameSite: 'lax',
     });
-
-    // 근데 root로 보내는게 맞나?
 
     return res.redirect('http://localhost:3000/');
   }
