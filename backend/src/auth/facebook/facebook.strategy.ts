@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-facebook';
 import { UserService } from 'src/user/user.service';
+import { IdentityProvider, SocialProfile } from '../socialProfile.model';
 
 type Name = string | undefined;
 type Email = { value: string };
@@ -39,22 +40,33 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     refreshToken: string,
     profile: FacebookProfile,
   ) {
-    console.log('_accessToken: ', accessToken); // 여기서 반환한 토큰은 facebook 토큰
+    console.log('_accessToken: ', accessToken); // 여기서 반환한 토큰은 facebook 토큰: 이걸로 session 유지를 하는건가?
 
     if (!profile) {
       return null;
     }
 
-    const facebookProfile = {
+    const _name = [
+      profile.name.familyName ?? '',
+      profile.name.givenName ?? '',
+      profile.name.middleName ?? '',
+    ].join(' ');
+
+    const facebookProfile: SocialProfile = {
       id: profile.id,
-      name: profile.username,
-      provider: 'facebook' as const,
+      name: profile.username ?? _name,
+      provider: IdentityProvider.FACEBOOK,
       accessToken,
       photo: profile.photos[0].value ?? undefined,
       email: profile.emails[0].value,
     };
-    const user = this.userService.findOrCreate(facebookProfile);
+
+    const user = await this.userService.findOrCreate(facebookProfile);
     // TODO: cookie에 accessToken을 넣어놓음
+
+    if (!user) {
+      return null;
+    }
 
     return user;
   }

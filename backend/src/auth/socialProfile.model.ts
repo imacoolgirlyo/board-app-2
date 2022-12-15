@@ -7,4 +7,7 @@ export interface SocialProfile {
   photo?: string;
 }
 
-export type IdentityProvider = 'facebook' | 'google';
+export enum IdentityProvider {
+  FACEBOOK = 'facebook',
+  GOOGLE = 'google',
+}
