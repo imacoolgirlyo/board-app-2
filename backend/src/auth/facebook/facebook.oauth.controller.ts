@@ -4,15 +4,11 @@ import { Response } from 'express';
 
 @Controller('auth/facebook')
 export class FacebookOAuthController {
-  constructor() {
-    //
-  }
+  constructor() {}
 
   @Get()
   @UseGuards(FacebookOauthGuard)
-  async facebookAuth() {
-    //
-  }
+  async facebookAuth() {}
 
   @Get('redirect')
   @UseGuards(FacebookOauthGuard)
