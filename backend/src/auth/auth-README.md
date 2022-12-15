@@ -11,6 +11,7 @@
 참고 튜토리얼
 
 - [OAuth2 in NestJS for Social Login (Google, Facebook, Twitter, etc)](https://javascript.plainenglish.io/oauth2-in-nestjs-for-social-login-google-facebook-twitter-etc-8b405d570fd2)
+- [How to set up Twitter OAuth using Passport.js and ReactJS](https://medium.com/free-code-camp/how-to-set-up-twitter-oauth-using-passport-js-and-reactjs-9ffa6f49ef0)
 
 이슈
 
