@@ -62,7 +62,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     };
 
     const user = await this.userService.findOrCreate(facebookProfile);
-    // TODO: cookie에 accessToken을 넣어놓음
 
     if (!user) {
       return null;
