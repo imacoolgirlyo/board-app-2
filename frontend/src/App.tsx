@@ -35,9 +35,14 @@ function App() {
     window.open("http://localhost:5000/auth/google", "_self");
   };
 
+  const handleFacebookLogin = async () => {
+    window.open("http://localhost:5000/auth/facebook", "_self");
+  };
+
   return (
     <div className="App">
       <button onClick={handleGoogleLogin}>Google Login</button>
+      <button onClick={handleFacebookLogin}>Facebook Login</button>
       {boards.map((board) => (
         <div>{board.title}</div>
       ))}
