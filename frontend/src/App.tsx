@@ -33,6 +33,11 @@ function App() {
 
   return (
     <div className="App">
+      <ul>
+        <li>
+          <a href="/login">Go to Login Page</a>
+        </li>
+      </ul>
       {boards.map((board) => (
         <div>{board.title}</div>
       ))}
