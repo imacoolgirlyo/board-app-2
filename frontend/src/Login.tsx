@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Login = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = searchParams.get("access_token");
+    if (accessToken) {
+      localStorage.setItem("b_access_token", accessToken);
+      navigate("/");
+    }
+  }, [searchParams, navigate]);
+
   const handleGoogleLogin = async () => {
     window.open("http://localhost:5000/auth/google", "_self");
   };
