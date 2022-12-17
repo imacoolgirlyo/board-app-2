@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App";
+import Login from "./Login";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
@@ -12,6 +13,7 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/boards", element: <div>??</div> },
+  { path: "/login", element: <Login /> },
 ]);
 root.render(
   <React.StrictMode>
