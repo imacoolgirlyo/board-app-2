@@ -19,6 +19,11 @@
   - docker-compose에 Postgresql, nestjs service 추가해서 컨테이너 실행시키기
 - 12.12 Planning
   Instagram 게시글 대신 올려주는 Service
+
   - 로그인
   - 이미지, 게시글, 해시태그 작성
   - 특정 시간에 업로드 되도록 예약
+
+  12.16
+
+- facebook에서 Redirect URL 로 Redirect 된 후 response로 access token을 넘겨주기
