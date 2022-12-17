@@ -31,18 +31,13 @@ function App() {
     setBoards((boards) => [...boards, newBoard]);
   };
 
-  const handleGoogleLogin = async () => {
-    window.open("http://localhost:5000/auth/google", "_self");
-  };
-
-  const handleFacebookLogin = async () => {
-    window.open("http://localhost:5000/auth/facebook", "_self");
-  };
-
   return (
     <div className="App">
-      <button onClick={handleGoogleLogin}>Google Login</button>
-      <button onClick={handleFacebookLogin}>Facebook Login</button>
+      <ul>
+        <li>
+          <a href="/login">Go to Login Page</a>
+        </li>
+      </ul>
       {boards.map((board) => (
         <div>{board.title}</div>
       ))}

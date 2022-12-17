@@ -17,11 +17,9 @@ export class GoogleAuthController {
   @UseGuards(GoogleOauthGuard)
   googleAuthRedirect(@Req() req, @Res() res: Response) {
     const { accessToken } = this.jwtAuthService.login(req.user);
-    res.cookie('jwt', accessToken, {
-      httpOnly: true,
-      sameSite: 'lax',
-    });
 
-    return res.redirect('http://localhost:3000/');
+    return res.redirect(
+      `http://localhost:3000/login?access_token=${accessToken}`,
+    );
   }
 }
