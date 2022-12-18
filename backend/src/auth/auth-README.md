@@ -22,3 +22,14 @@
   - 이때, OAuth endpoint(account.google.com)은 AJAX 요청을 할 수 없도록 디자인 되어 있기 떄문에 Redirect를 통해서만 가야한다.
     - 참고 stackoverflow : https://stackoverflow.com/a/43276710
     - https://stackoverflow.com/a/69428937/20767023
+
+Learned
+
+- client에서 jwt token을 ~~valid한지~~ 사용 가능한지 판단하는 방법
+
+  1. jwt token의 expiration time과 현재 시간(Date.now())를 비교해서 만료되었는지 체크
+  2. jwt token을 사용하여 request를 보낸 후, response status를 확인 (200 혹은 401)
+
+  => token이 valid 한지, 아닌지는 client에서 판단할 수 없다. 이건 server에서 판단할 수 있는 일. client에서 할 수 있는건 Base64로 encoding 되어 있는 token을 decode해서 내용을 확인해볼 수 는 있다.
+
+  Client에서 Protected Route를 만들기 위해서는 로그인 되어 있는지 판단해야한다. 로그인 후에 server에서 user를 반환했다면 user 데이터가 있는지를 확인하면 될 것이고 만약 access token을 반환했다면 이 access token의 유효 기간을 확인하는 식으로 로그인 유무를 판단할 수 있다. 즉 client에서 어떤 데이터를 보고 로그인 되었는지 판단할 것인가는 각 application 마다 다를 것임
