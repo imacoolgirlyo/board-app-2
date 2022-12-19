@@ -40,3 +40,4 @@ Learned
   - 내가 찾고 있던 정보!!!!!
   - back channel request 방식을 사용하면 OAuth server에서 발급해주는 access token을 브라우저를 통하지 않고 server application이 직접 받기 때문에 보안성 더 안전하다고 볼 수 있음
   - 출처: https://www.passportjs.org/concepts/oauth2/token/
+  - https://www.deepnetwork.com/blog//2019/11/08/oauth2-oicd-pkce.html
