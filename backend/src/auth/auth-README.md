@@ -33,3 +33,10 @@ Learned
   => token이 valid 한지, 아닌지는 client에서 판단할 수 없다. 이건 server에서 판단할 수 있는 일. client에서 할 수 있는건 Base64로 encoding 되어 있는 token을 decode해서 내용을 확인해볼 수 는 있다.
 
   Client에서 Protected Route를 만들기 위해서는 로그인 되어 있는지 판단해야한다. 로그인 후에 server에서 user를 반환했다면 user 데이터가 있는지를 확인하면 될 것이고 만약 access token을 반환했다면 이 access token의 유효 기간을 확인하는 식으로 로그인 유무를 판단할 수 있다. 즉 client에서 어떤 데이터를 보고 로그인 되었는지 판단할 것인가는 각 application 마다 다를 것임
+
+- 이 프로젝트에서는 passport strategy를 사용하여 OAuth 2.0 login flow를 만들었음. 이렇게 server side web application 에서 사용되는 OAuth 2.0 는 request시 response_type으로 code를 사용한다. 다른 타입은 사용되지 않음
+
+- 이렇게 server에서 OAuth server(Google, Facebook 등)으로 login request를 보내는 방식을 `back-channel` request라고 하고 반대로 웹 브라우저에서 OAuth server로 login request를 바로 보내는 방식을 `front-channel` request라고 부름
+  - 내가 찾고 있던 정보!!!!!
+  - back channel request 방식을 사용하면 OAuth server에서 발급해주는 access token을 브라우저를 통하지 않고 server application이 직접 받기 때문에 보안성 더 안전하다고 볼 수 있음
+  - 출처: https://www.passportjs.org/concepts/oauth2/token/
