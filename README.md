@@ -31,7 +31,14 @@
   12.17
 
 - local storage(LS) 내의 access token 있는지 + valid한지 확인 (로그인 상태 확인)
+
   - Landing Page에서 LS에 있는 access token 확인 후 valid 하면 Home으로 Redirect
   - user 정보가 필요한 곳은 Protected Routes 만들어서 access token이 valid 하지 않으면 접속을 막고자함
     TODO: 다들 client에서 at 어떻게 관리함?
     PROBLEM: 만약 Home(또는 다른 Board Page) 에서 Login page로 넘어가서 재로그인을 했다면 기존에 있었던 페이지로 돌아오게 하고 싶다.
+
+    12.20
+
+- instagram API 적용 튜토리얼 : https://superface.ai/blog/instagram-setup
+- https://superface.ai/blog/instagram-account-id
+- instagram account를 다루려면 user의 access token과 business account ID가 필요

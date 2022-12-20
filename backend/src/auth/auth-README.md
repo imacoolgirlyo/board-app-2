@@ -37,7 +37,10 @@ Learned
 - 이 프로젝트에서는 passport strategy를 사용하여 OAuth 2.0 login flow를 만들었음. 이렇게 server side web application 에서 사용되는 OAuth 2.0 는 request시 response_type으로 code를 사용한다. 다른 타입은 사용되지 않음
 
 - 이렇게 server에서 OAuth server(Google, Facebook 등)으로 login request를 보내는 방식을 `back-channel` request라고 하고 반대로 웹 브라우저에서 OAuth server로 login request를 바로 보내는 방식을 `front-channel` request라고 부름
+
   - 내가 찾고 있던 정보!!!!!
   - back channel request 방식을 사용하면 OAuth server에서 발급해주는 access token을 브라우저를 통하지 않고 server application이 직접 받기 때문에 보안성 더 안전하다고 볼 수 있음
   - 출처: https://www.passportjs.org/concepts/oauth2/token/
   - https://www.deepnetwork.com/blog//2019/11/08/oauth2-oicd-pkce.html
+
+- server에서 clinetID와 client key를 통해 발급 받은 facebook access token은 long-lived token이다. Facebook 서버로 요청을 보내면 하루에 한번씩 토큰을 갱신하고 60일 동안 해당 token을 사용하지 않는 경우 토큰이 만료된다.
