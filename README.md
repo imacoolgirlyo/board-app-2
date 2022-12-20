@@ -42,3 +42,6 @@
 - instagram API 적용 튜토리얼 : https://superface.ai/blog/instagram-setup
 - https://superface.ai/blog/instagram-account-id
 - instagram account를 다루려면 user의 access token과 business account ID가 필요
+
+- facebook id token은 long lived token이기 때문에 어딘가에 저장해서 사용해야 한다. User <-> Token이 OneToOne relation로 설정하고 싶어서 User가 Token의 foreign key를 가지고 있도록 `@JoinColumn()` decorator를 붙였다.
+  단 google에서 제공한 id token은 굳이 저장하지 않아도 될 거 같아서 foreign key가 null이 될 수 있는 경우에 대해 알아봄
