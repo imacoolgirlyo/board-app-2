@@ -5,9 +5,10 @@ import { FacebookStrategy } from './facebook/facebook.strategy';
 import { GoogleAuthController } from './google.auth.controller';
 import { GoogleStrategy } from './google.strategy';
 import { JwtAuthModule } from './jwt-auth.module';
+import { TokenModule } from 'src/token/token.module';
 
 @Module({
-  imports: [JwtAuthModule, UserModule],
+  imports: [JwtAuthModule, UserModule, TokenModule],
   controllers: [GoogleAuthController, FacebookOAuthController],
   providers: [GoogleStrategy, FacebookStrategy],
 })
