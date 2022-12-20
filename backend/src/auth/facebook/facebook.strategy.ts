@@ -4,7 +4,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-facebook';
 import { UserService } from 'src/user/user.service';
 import { IdentityProvider, SocialProfile } from '../socialProfile.model';
-import { TokenService } from '../../token/token.service';
 
 type Name = string | undefined;
 type Email = { value: string };
@@ -27,7 +26,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor(
     configService: ConfigService,
     private readonly userService: UserService,
-    private readonly tokenService: TokenService,
   ) {
     super({
       clientID: configService.get<string>('FACEBOOK_CLIENT_ID'),
@@ -42,6 +40,8 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     refreshToken: string,
     profile: FacebookProfile,
   ) {
+    console.log('_accessToken: ', accessToken); // 여기서 반환한 토큰은 facebook 토큰: 이걸로 session 유지를 하는건가?
+
     if (!profile) {
       return null;
     }
@@ -66,8 +66,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     if (!user) {
       return null;
     }
-
-    await this.tokenService.save(user.id, accessToken);
 
     return user;
   }
