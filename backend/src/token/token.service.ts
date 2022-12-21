@@ -10,10 +10,14 @@ export class TokenService {
   ) {}
 
   async save(accessToken: string, refreshToken?: string, expiry_time?: number) {
-    await this.tokenRepository.save({
+    const token = this.tokenRepository.create({
       access_token: accessToken,
-      refreshToken: refreshToken,
+      refresh_token: refreshToken,
       expiry_time,
     });
+
+    const saved = await this.tokenRepository.save(token);
+
+    return saved;
   }
 }

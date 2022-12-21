@@ -67,8 +67,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       return null;
     }
 
-    await this.tokenService.save(user.id, accessToken);
-
     return user;
   }
 }
