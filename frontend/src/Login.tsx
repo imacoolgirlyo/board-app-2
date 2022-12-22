@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
@@ -10,6 +11,17 @@ const Login = () => {
     if (accessToken) {
       localStorage.setItem("b_access_token", accessToken);
       navigate("/");
+    }
+  }, [searchParams, navigate]);
+
+  useEffect(() => {
+    const authCode = searchParams.get("code");
+    if (authCode) {
+      axios
+        .get(`http://localhost:5000/auth/open-banking?code=${authCode}`)
+        .then((response) => {
+          console.log(response.data);
+        });
     }
   }, [searchParams, navigate]);
 
