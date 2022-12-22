@@ -37,4 +37,11 @@
     PROBLEM: 만약 Home(또는 다른 Board Page) 에서 Login page로 넘어가서 재로그인을 했다면 기존에 있었던 페이지로 돌아오게 하고 싶다. ✅
 
 - 12.21
+
   - facebook token을 DB에 저장 ✅
+
+- 12.22
+  - instagram API 사용법 참고 : https://superface.ai/blog/instagram-account-id
+  - TODO: token 저장 로직 개선 ✅
+  - TODO: instagram 계정 아이디까지 보여주도록 변경
+  - TODO: 계층형 설계 읽고 -> 설계 해보기

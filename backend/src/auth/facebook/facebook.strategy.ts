@@ -40,8 +40,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     refreshToken: string,
     profile: FacebookProfile,
   ) {
-    console.log('_accessToken: ', accessToken); // 여기서 반환한 토큰은 facebook 토큰: 이걸로 session 유지를 하는건가?
-
     if (!profile) {
       return null;
     }
