@@ -5,10 +5,16 @@ import { FacebookStrategy } from './facebook/facebook.strategy';
 import { GoogleAuthController } from './google.auth.controller';
 import { GoogleStrategy } from './google.strategy';
 import { JwtAuthModule } from './jwt-auth.module';
+import { OpenBankingOAuthController } from './openbanking/openbanking.oauth.controller';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [JwtAuthModule, UserModule],
-  controllers: [GoogleAuthController, FacebookOAuthController],
+  imports: [JwtAuthModule, UserModule, HttpModule],
+  controllers: [
+    GoogleAuthController,
+    FacebookOAuthController,
+    OpenBankingOAuthController,
+  ],
   providers: [GoogleStrategy, FacebookStrategy],
 })
 export class AuthModule {}
