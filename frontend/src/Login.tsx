@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [isUserValidated, setIsUserValidated] = useState(false);
 
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
@@ -15,15 +15,11 @@ const Login = () => {
   }, [searchParams, navigate]);
 
   useEffect(() => {
-    const authCode = searchParams.get("code");
-    if (authCode) {
-      axios
-        .get(`http://localhost:5000/auth/open-banking?code=${authCode}`)
-        .then((response) => {
-          console.log(response.data);
-        });
+    const openBankAccessToken = searchParams.get("open_b_access_token");
+    if (openBankAccessToken) {
+      setIsUserValidated(true);
     }
-  }, [searchParams, navigate]);
+  }, [searchParams]);
 
   const handleGoogleLogin = async () => {
     window.open("http://localhost:5000/auth/google", "_self");
@@ -42,23 +38,67 @@ const Login = () => {
       "client_id",
       "c60b06fb-1c0f-4d58-8d28-6fe4cca77f22"
     );
-    url.searchParams.append("redirect_uri", "http://localhost:3000/login");
+    url.searchParams.append(
+      "redirect_uri",
+      "http://localhost:5000/auth/open-banking"
+    );
     url.searchParams.append("scope", "login inquiry transfer");
     url.searchParams.append("state", "12345678901234567890123456789012");
     url.searchParams.append("auth_type", "0");
 
+    console.log("url.toString(): ", url.toString());
     window.open(url.toString(), "_self");
   };
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div>
       <h2>Who are you?</h2>
       <div>
-        <button onClick={handleGoogleLogin}>Google Login</button>
-        <button onClick={handleFacebookLogin}>Facebook Login</button>
-        <button onClick={handleOpenBankingLogin}>
-          Open Banking 사용자 인증
-        </button>
+        <li>
+          <button onClick={handleGoogleLogin}>Google Login</button>
+        </li>
+        <li>
+          <button onClick={handleFacebookLogin}>Facebook Login</button>
+        </li>
+        <li style={{ backgroundColor: "beige" }}>
+          계좌 내역을 확인하고 싶으시다면?
+          <div>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type={"email"}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type={"password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <div>
+              {isUserValidated ? "✅ 유저 인증 완료" : "🚨 유저 인증 필요!!!!"}
+              <button onClick={handleOpenBankingLogin}>공인 인증하기</button>
+            </div>
+
+            <button
+              disabled={
+                !(email.length > 0 && password.length > 0 && isUserValidated)
+              }
+            >
+              가입 하기
+            </button>
+          </div>
+        </li>
       </div>
     </div>
   );
