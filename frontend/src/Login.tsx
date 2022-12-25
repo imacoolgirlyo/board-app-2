@@ -15,7 +15,7 @@ const Login = () => {
   }, [searchParams, navigate]);
 
   useEffect(() => {
-    const openBankAccessToken = searchParams.get("open_b_access_token");
+    const openBankAccessToken = searchParams.get("open_b_userId");
     if (openBankAccessToken) {
       setIsUserValidated(true);
     }
@@ -90,13 +90,7 @@ const Login = () => {
               <button onClick={handleOpenBankingLogin}>공인 인증하기</button>
             </div>
 
-            <button
-              disabled={
-                !(email.length > 0 && password.length > 0 && isUserValidated)
-              }
-            >
-              가입 하기
-            </button>
+            <button>가입 하기</button>
           </div>
         </li>
       </div>
