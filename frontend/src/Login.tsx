@@ -15,7 +15,7 @@ const Login = () => {
   }, [searchParams, navigate]);
 
   useEffect(() => {
-    const openBankAccessToken = searchParams.get("open_b_userId");
+    const openBankAccessToken = searchParams.get("b_access_token");
     if (openBankAccessToken) {
       setIsUserValidated(true);
     }

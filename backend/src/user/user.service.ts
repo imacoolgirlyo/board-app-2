@@ -33,4 +33,22 @@ export class UserService {
 
     return saved;
   }
+
+  async create(profile): Promise<UserModel> {
+    const _user = await this.userRepository.findOneBy({ localId: profile.id });
+
+    if (_user) {
+      return _user;
+    }
+
+    const openBankingToken = await this.tokenService.create(profile.token);
+
+    const saved = await this.userRepository.save({
+      provider: profile.provider,
+      localId: profile.id,
+      token: openBankingToken,
+    });
+
+    return saved;
+  }
 }

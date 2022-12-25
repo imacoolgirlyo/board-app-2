@@ -2,6 +2,9 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { IdentityProvider, SocialProfile } from '../socialProfile.model';
+import { UserService } from 'src/user/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 interface OpenBankingUserData {
   access_token: string;
@@ -17,6 +20,8 @@ export class OpenBankingOAuthController {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @Get()
@@ -29,7 +34,7 @@ export class OpenBankingOAuthController {
       'OPEN_BANKING_TEST_API',
     );
 
-    const data = {
+    const config = {
       code: query.code,
       client_id: 'c60b06fb-1c0f-4d58-8d28-6fe4cca77f22',
       client_secret: '0f481f5f-7177-4d0b-a5ed-fbda542a07ba',
@@ -37,9 +42,9 @@ export class OpenBankingOAuthController {
       grant_type: 'authorization_code',
     };
 
-    const res = await this.httpService.axiosRef.post<OpenBankingUserData>(
+    const { data } = await this.httpService.axiosRef.post<OpenBankingUserData>(
       `${openBankingUrl}/oauth/2.0/token`,
-      data,
+      config,
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -47,8 +52,25 @@ export class OpenBankingOAuthController {
       },
     );
 
+    const openBankingProfile = {
+      id: data.user_seq_no,
+      name: '',
+      email: '',
+      provider: IdentityProvider.OPEN_BANKING,
+      token: {
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_in: data.expires_in,
+        scope: data.scope,
+        token_type: data.token_type,
+      },
+    };
+
+    const user = await this.userService.create(openBankingProfile);
+    const jwt = await this.jwtService.sign(user);
+
     return response.redirect(
-      `http://localhost:3000/login?open_b_userId=${res.data.user_seq_no}`,
+      `http://localhost:3000/login?b_access_token=${jwt}`,
     );
   }
 }
