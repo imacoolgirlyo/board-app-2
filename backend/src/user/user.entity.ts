@@ -1,5 +1,12 @@
 import { IdentityProvider } from 'src/auth/socialProfile.model';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Token } from 'src/token/token.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -20,6 +27,10 @@ export class User {
     enum: IdentityProvider,
   })
   provider: IdentityProvider;
+
+  @OneToOne(() => Token)
+  @JoinColumn()
+  token: Token;
 
   @Column()
   localId: string;

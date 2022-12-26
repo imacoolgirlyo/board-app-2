@@ -48,4 +48,11 @@ export class UserService {
       provider: saved.provider,
     };
   }
+
+  async findById(id: string): Promise<UserModel> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    return {
+      id: user.id,
+    };
+  }
 }
