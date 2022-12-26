@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SocialProfile } from 'src/auth/socialProfile.model';
+import { IdentityProvider, SocialProfile } from 'src/auth/socialProfile.model';
 import { TokenService } from 'src/token/token.service';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -34,13 +34,7 @@ export class UserService {
     return saved;
   }
 
-  async create(profile): Promise<UserModel> {
-    const _user = await this.userRepository.findOneBy({ localId: profile.id });
-
-    if (_user) {
-      return _user;
-    }
-
+  async create(profile): Promise<{ id: string; provider: IdentityProvider }> {
     const openBankingToken = await this.tokenService.create(profile.token);
 
     const saved = await this.userRepository.save({
@@ -49,6 +43,9 @@ export class UserService {
       token: openBankingToken,
     });
 
-    return saved;
+    return {
+      id: saved.id,
+      provider: saved.provider,
+    };
   }
 }

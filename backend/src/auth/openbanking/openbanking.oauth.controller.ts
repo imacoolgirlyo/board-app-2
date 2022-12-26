@@ -67,10 +67,10 @@ export class OpenBankingOAuthController {
     };
 
     const user = await this.userService.create(openBankingProfile);
-    const jwt = await this.jwtService.sign(user);
+    const temporaryJwt = await this.jwtService.sign(user);
 
     return response.redirect(
-      `http://localhost:3000/login?b_access_token=${jwt}`,
+      `http://localhost:3000/login?b_access_token=${temporaryJwt}`,
     );
   }
 }
