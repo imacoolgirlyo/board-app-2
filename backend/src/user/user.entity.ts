@@ -20,6 +20,9 @@ export class User {
   email: string;
 
   @Column({ nullable: true })
+  password: string;
+
+  @Column({ nullable: true })
   photo: string;
 
   @Column({

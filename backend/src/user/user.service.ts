@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcryptjs';
 import { IdentityProvider, SocialProfile } from 'src/auth/socialProfile.model';
 import { TokenService } from 'src/token/token.service';
 import { Repository } from 'typeorm';
@@ -53,6 +54,30 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { id } });
     return {
       id: user.id,
+    };
+  }
+
+  async update(user: {
+    id: string;
+    email: string;
+    password: string;
+  }): Promise<UserModel> {
+    const _user = await this.userRepository.findOne({ where: { id: user.id } });
+    if (!_user) {
+      throw new Error('Can not find user.');
+    }
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(user.password, salt);
+
+    _user.email = user.email;
+    _user.password = hashedPassword;
+
+    const saved = await this.userRepository.save(_user);
+
+    return {
+      id: saved.id,
+      email: saved.email,
     };
   }
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
@@ -9,7 +10,7 @@ const Login = () => {
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
     if (accessToken) {
-      localStorage.setItem("b_access_token", accessToken);
+      localStorage.setItem("access_token", accessToken);
       navigate("/");
     }
   }, [searchParams, navigate]);
@@ -17,6 +18,7 @@ const Login = () => {
   useEffect(() => {
     const openBankAccessToken = searchParams.get("b_access_token");
     if (openBankAccessToken) {
+      localStorage.setItem("b_access_token", openBankAccessToken);
       setIsUserValidated(true);
     }
   }, [searchParams]);
@@ -52,6 +54,18 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    const accessToken = localStorage.getItem("b_access_token");
+    await axios.post(
+      "http://localhost:5000/auth/signIn",
+      {
+        email,
+        password,
+      },
+      { headers: { authorization: `Bearer ${accessToken}` } }
+    );
+  };
 
   return (
     <div>
@@ -90,7 +104,7 @@ const Login = () => {
               <button onClick={handleOpenBankingLogin}>공인 인증하기</button>
             </div>
 
-            <button>가입 하기</button>
+            <button onClick={handleSubmit}>가입 하기</button>
           </div>
         </li>
       </div>
