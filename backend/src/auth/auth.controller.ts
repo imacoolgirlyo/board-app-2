@@ -14,10 +14,11 @@ export class AuthController {
   @UseGuards(OpenBankingOauthGuard)
   async signInWithEmail(
     @Req() req,
-    @Body() updateDto: { email: string; password: string },
+    @Body() updateDto: { name: string; email: string; password: string },
   ): Promise<{ access_token: string }> {
     const user = await this.userService.update({
       id: req.user.id,
+      name: updateDto.name,
       email: updateDto.email,
       password: updateDto.password,
     });

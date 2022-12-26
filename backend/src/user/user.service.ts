@@ -59,6 +59,7 @@ export class UserService {
 
   async update(user: {
     id: string;
+    name: string;
     email: string;
     password: string;
   }): Promise<UserModel> {
@@ -71,12 +72,14 @@ export class UserService {
     const hashedPassword = await bcrypt.hash(user.password, salt);
 
     _user.email = user.email;
+    _user.name = user.name;
     _user.password = hashedPassword;
 
     const saved = await this.userRepository.save(_user);
 
     return {
       id: saved.id,
+      name: saved.name,
       email: saved.email,
     };
   }

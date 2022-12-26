@@ -54,12 +54,14 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const handleSubmit = async () => {
     const accessToken = localStorage.getItem("b_access_token");
     await axios.post(
       "http://localhost:5000/auth/signIn",
       {
+        name,
         email,
         password,
       },
@@ -80,6 +82,14 @@ const Login = () => {
         <li style={{ backgroundColor: "beige" }}>
           계좌 내역을 확인하고 싶으시다면?
           <div>
+            <div>
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
             <div>
               <label htmlFor="email">Email</label>
               <input
