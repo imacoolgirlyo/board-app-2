@@ -29,6 +29,7 @@
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "form-data": "^4.0.0",
     "passport": "^0.6.0",
