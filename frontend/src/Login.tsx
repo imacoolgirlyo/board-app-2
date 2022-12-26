@@ -16,9 +16,9 @@ const Login = () => {
   }, [searchParams, navigate]);
 
   useEffect(() => {
-    const openBankAccessToken = searchParams.get("b_access_token");
+    const openBankAccessToken = searchParams.get("tmp_access_token");
     if (openBankAccessToken) {
-      localStorage.setItem("b_access_token", openBankAccessToken);
+      localStorage.setItem("tmp_access_token", openBankAccessToken);
       setIsUserValidated(true);
     }
   }, [searchParams]);
@@ -57,16 +57,19 @@ const Login = () => {
   const [name, setName] = useState("");
 
   const handleSubmit = async () => {
-    const accessToken = localStorage.getItem("b_access_token");
-    await axios.post(
+    const tmpToken = localStorage.getItem("tmp_access_token");
+    const res = await axios.post<{ access_token: string }>(
       "http://localhost:5000/auth/signIn",
       {
         name,
         email,
         password,
       },
-      { headers: { authorization: `Bearer ${accessToken}` } }
+      { headers: { authorization: `Bearer ${tmpToken}` } }
     );
+
+    localStorage.removeItem("tmp_access_token");
+    localStorage.setItem("bank_access_token", res.data.access_token);
   };
 
   return (
