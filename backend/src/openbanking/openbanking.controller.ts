@@ -1,18 +1,16 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { OpenBankingService } from './openbanking.service';
 
 @Controller('open-banking')
 export class OpenBankingController {
-  constructor() {}
+  constructor(private openBankingService: OpenBankingService) {}
 
   @Get('me')
-  @UseGuards(AuthGuard('jwt')) // 이걸 해주기 위해서 꼭 JwtModule을 import 해야하나?
+  @UseGuards(AuthGuard('jwt'))
   async getUser(@Req() req) {
-    console.log('req: ', req.user);
+    const user = await this.openBankingService.getUser(req.user);
 
-    // const user = openBankingService.getUser(req.user)
-    // 이 userInfo에 대한 interface 정의
-
-    return '';
+    return user;
   }
 }

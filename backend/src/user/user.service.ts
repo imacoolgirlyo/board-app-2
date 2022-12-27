@@ -87,7 +87,10 @@ export class UserService {
   // TODO: condition type을 user의 column 중 하나로 찾을 수 있도록 변경
   async findOne(condition: { email?: string; id?: string; localId?: string }) {
     // TODO: 같은 이메일 사용하는 유저가 없도록 처리 필요
-    const user = await this.userRepository.findOne({ where: condition });
+    const user = await this.userRepository.findOne({
+      where: condition,
+      relations: ['token'],
+    });
 
     if (!user) {
       throw new Error('Can not find user.');
@@ -99,6 +102,8 @@ export class UserService {
       name: user.name,
       email: user.email,
       password: user.password,
+      localId: user.localId,
+      token: user.token,
     };
   }
 }

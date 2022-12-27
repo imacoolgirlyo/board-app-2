@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { BoardsModule } from './boards/boards.module';
 import { OpenBankingModule } from './openbanking/openbanking.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { OpenBankingModule } from './openbanking/openbanking.module';
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     OpenBankingModule,
+    TokenModule,
   ],
   controllers: [],
   providers: [],
