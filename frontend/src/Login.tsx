@@ -70,6 +70,8 @@ const Login = () => {
 
     localStorage.removeItem("tmp_access_token");
     localStorage.setItem("bank_access_token", res.data.access_token);
+
+    navigate("/");
   };
 
   return (
