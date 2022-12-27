@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { BoardsModule } from './boards/boards.module';
+import { OpenBankingModule } from './openbanking/openbanking.module';
 
 @Module({
   imports: [
@@ -15,10 +16,11 @@ import { BoardsModule } from './boards/boards.module';
       password: 'postgres',
       database: 'board-postgres',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
     }),
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    OpenBankingModule,
   ],
   controllers: [],
   providers: [],
