@@ -1,7 +1,25 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Account from "./Account";
+
+export interface BankUser {
+  api_tran_id: string;
+  user_name: string;
+  res_cnt: string;
+  res_list: IAccount[];
+}
+
+export interface IAccount {
+  fintech_use_num: string;
+  account_alias: string;
+  bank_name: string;
+  account_holder_type: string;
+  account_type: string;
+}
 
 function App() {
+  const [bankUser, setBankUser] = useState<BankUser | undefined>();
+
   useEffect(() => {
     const token = localStorage.getItem("bank_access_token");
 
@@ -11,7 +29,7 @@ function App() {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
-          console.log(res.data);
+          setBankUser(res.data);
         });
     }
   }, []);
@@ -26,6 +44,17 @@ function App() {
           <a href="/boards">Let me show my boards</a>
         </li>
       </ul>
+      {bankUser && `Hello ${bankUser?.user_name}`}
+      <div>
+        {(bankUser?.res_list ?? []).map((account) => (
+          <Account
+            key={account.fintech_use_num}
+            fintechNum={account.fintech_use_num}
+            accountName={account.account_alias}
+            bankName={account.bank_name}
+          />
+        ))}
+      </div>
     </div>
   );
 }
