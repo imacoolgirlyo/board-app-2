@@ -36,8 +36,8 @@ export class OpenBankingOAuthController {
 
     const config = {
       code: query.code,
-      client_id: 'c60b06fb-1c0f-4d58-8d28-6fe4cca77f22',
-      client_secret: '0f481f5f-7177-4d0b-a5ed-fbda542a07ba',
+      client_id: this.configService.get<string>('OPEN_BANKING_CLINET_ID'),
+      client_secret: this.configService.get<string>('OPEN_BANKING_SECERT'),
       redirect_uri: 'http://localhost:5000/auth/open-banking',
       grant_type: 'authorization_code',
     };
