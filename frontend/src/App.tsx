@@ -15,6 +15,7 @@ export interface IAccount {
   bank_name: string;
   account_holder_type: string;
   account_type: string;
+  account_num_masked: string;
 }
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
             fintechNum={account.fintech_use_num}
             accountName={account.account_alias}
             bankName={account.bank_name}
+            accountNum={account.account_num_masked}
           />
         ))}
       </div>

@@ -4,6 +4,7 @@ export interface Account {
   bank_name: string;
   account_holder_type: string;
   account_type: string;
+  account_num_masked: string;
 }
 
 export interface BankUser {
@@ -19,6 +20,7 @@ export class OpenBankAccount implements Account {
   public bank_name: string;
   public account_holder_type: string;
   public account_type: string;
+  public account_num_masked: string;
 
   constructor(data: {
     fintech_use_num: string;
@@ -26,12 +28,14 @@ export class OpenBankAccount implements Account {
     bank_name: string;
     account_holder_type: string;
     account_type: string;
+    account_num_masked: string;
   }) {
     this.fintech_use_num = data.fintech_use_num;
     this.account_alias = data.account_alias;
     this.bank_name = data.bank_name;
     this.account_holder_type = data.account_holder_type;
     this.account_type = data.account_type;
+    this.account_num_masked = data.account_num_masked;
   }
 }
 

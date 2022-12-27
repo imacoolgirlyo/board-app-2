@@ -4,16 +4,19 @@ const Account = ({
   fintechNum,
   accountName,
   bankName,
+  accountNum,
 }: {
   fintechNum: string;
   accountName: string;
   bankName: string;
+  accountNum: string;
 }) => {
   return (
     <AccountBox>
       <AccountInfo>
+        <AccountBank>{bankName}</AccountBank>
         <AccountName>{accountName}</AccountName>
-        <AccountNum>{fintechNum}</AccountNum>
+        <AccountNum>{accountNum}</AccountNum>
       </AccountInfo>
       <CheckBalanceButton>잔액 조회</CheckBalanceButton>
     </AccountBox>
@@ -32,6 +35,11 @@ const AccountBox = styled.div`
 `;
 
 const AccountInfo = styled.div``;
+
+const AccountBank = styled.div`
+  color: white;
+  font-size: 15px;
+`;
 
 const AccountName = styled.div`
   color: white;
