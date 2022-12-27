@@ -25,6 +25,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLoginButtonClick = async () => {
+    const res = await axios.post<{ access_token: string }>(
+      "http://localhost:5000/auth/login",
+      {
+        email,
+        password,
+      }
+    );
+
+    localStorage.setItem("bank_access_token", res.data.access_token);
+  };
+
   return (
     <div>
       <h2>Who are you?</h2>
@@ -55,6 +67,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <button onClick={handleLoginButtonClick}>로그인</button>
         </li>
         <a href="/signIn">
           계좌 내역을 확인하고 싶으신데 아직 가입하지 않았다면?
