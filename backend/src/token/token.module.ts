@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Token } from './token.entity';
+import { OpenBankingToken, Token } from './token.entity';
 import { TokenService } from './token.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Token])],
+  imports: [TypeOrmModule.forFeature([Token, OpenBankingToken])],
   providers: [TokenService],
   exports: [TokenService],
 })

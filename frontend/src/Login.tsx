@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
@@ -8,7 +9,7 @@ const Login = () => {
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
     if (accessToken) {
-      localStorage.setItem("b_access_token", accessToken);
+      localStorage.setItem("access_token", accessToken);
       navigate("/");
     }
   }, [searchParams, navigate]);
@@ -21,12 +22,57 @@ const Login = () => {
     window.open("http://localhost:5000/auth/facebook", "_self");
   };
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLoginButtonClick = async () => {
+    const res = await axios.post<{ access_token: string }>(
+      "http://localhost:5000/auth/login",
+      {
+        email,
+        password,
+      }
+    );
+
+    localStorage.setItem("bank_access_token", res.data.access_token);
+    navigate("/");
+  };
+
   return (
     <div>
       <h2>Who are you?</h2>
       <div>
-        <button onClick={handleGoogleLogin}>Google Login</button>
-        <button onClick={handleFacebookLogin}>Facebook Login</button>
+        <li>
+          <button onClick={handleGoogleLogin}>Google Login</button>
+        </li>
+        <li>
+          <button onClick={handleFacebookLogin}>Facebook Login</button>
+        </li>
+        <li>
+          로그인 하기
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type={"email"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type={"password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button onClick={handleLoginButtonClick}>로그인</button>
+        </li>
+        <a href="/signIn">
+          계좌 내역을 확인하고 싶으신데 아직 가입하지 않았다면?
+        </a>
       </div>
     </div>
   );

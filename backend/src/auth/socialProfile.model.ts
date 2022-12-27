@@ -4,10 +4,12 @@ export interface SocialProfile {
   provider: IdentityProvider;
   email: string;
   accessToken: string;
+  refreshToken?: string;
   photo?: string;
 }
 
 export enum IdentityProvider {
   FACEBOOK = 'facebook',
   GOOGLE = 'google',
+  OPEN_BANKING = 'openBanking',
 }

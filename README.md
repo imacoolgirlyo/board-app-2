@@ -41,7 +41,22 @@
   - facebook token을 DB에 저장 ✅
 
 - 12.22
+
   - instagram API 사용법 참고 : https://superface.ai/blog/instagram-account-id
   - TODO: token 저장 로직 개선 ✅
   - TODO: instagram 계정 아이디까지 보여주도록 변경
   - TODO: 계층형 설계 읽고 -> 설계 해보기
+
+- 12.25
+
+  - TODO: email, pw, + open banking 인증 form 으로 가입 flow 만들기 ✅
+
+- 12.26
+
+  - GET /token 에서 token 정보 DB에 저장 ✅
+  - POST /signIn 에서 user email, pw 저장 ✅
+  - 로그인시 사용할 토큰 우리가 직접 발급한 access token? open banking access token? ✅
+  - access token local storage에 저장 ✅
+
+- 12.27
+  - 사용자 정보 조회 API
