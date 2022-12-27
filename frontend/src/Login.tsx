@@ -35,6 +35,7 @@ const Login = () => {
     );
 
     localStorage.setItem("bank_access_token", res.data.access_token);
+    navigate("/");
   };
 
   return (
