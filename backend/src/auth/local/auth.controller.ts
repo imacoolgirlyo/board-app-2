@@ -1,7 +1,8 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
-import { OpenBankingOauthGuard } from './openbanking/openbanking.guard';
+import { OpenBankingOauthGuard } from '../openbanking/openbanking.guard';
+import { LocalAuthGuard } from './local.auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -24,6 +25,13 @@ export class AuthController {
     });
 
     const access_token = this.jwtService.sign(user);
+    return { access_token };
+  }
+
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  async loginWithEmail(@Req() req): Promise<{ access_token: string }> {
+    const access_token = this.jwtService.sign(req.user);
     return { access_token };
   }
 }

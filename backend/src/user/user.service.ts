@@ -83,4 +83,22 @@ export class UserService {
       email: saved.email,
     };
   }
+
+  // TODO: condition type을 user의 column 중 하나로 찾을 수 있도록 변경
+  async findOne(condition: { email?: string; id?: string; localId?: string }) {
+    // TODO: 같은 이메일 사용하는 유저가 없도록 처리 필요
+    const user = await this.userRepository.findOne({ where: condition });
+
+    if (!user) {
+      throw new Error('Can not find user.');
+    }
+
+    // TODO: user 모델 통일 필요
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    };
+  }
 }
