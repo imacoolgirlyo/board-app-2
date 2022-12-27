@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { OpenBankingService } from './openbanking.service';
 
@@ -12,5 +12,16 @@ export class OpenBankingController {
     const user = await this.openBankingService.getUser(req.user);
 
     return user;
+  }
+
+  @Get(':accountId/balance')
+  @UseGuards(AuthGuard('jwt'))
+  async getBalance(@Req() req, @Param() params) {
+    const balance = await this.openBankingService.getBalance(
+      req.user.id,
+      params.accountId,
+    );
+
+    return balance;
   }
 }

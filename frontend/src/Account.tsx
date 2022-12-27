@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Account = ({
@@ -11,6 +13,26 @@ const Account = ({
   bankName: string;
   accountNum: string;
 }) => {
+  const [balance, setBalance] = useState<
+    { amount: string; availableAmount: string } | undefined
+  >();
+
+  useEffect(() => {
+    const token = localStorage.getItem("bank_access_token");
+    if (token) {
+      axios
+        .get(`http://localhost:5000/open-banking/${fintechNum}/balance`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          setBalance(res.data);
+        });
+    }
+  }, []);
+
+  const addComma = (amount: string) =>
+    amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   return (
     <AccountBox>
       <AccountInfo>
@@ -18,7 +40,9 @@ const Account = ({
         <AccountName>{accountName}</AccountName>
         <AccountNum>{accountNum}</AccountNum>
       </AccountInfo>
-      <CheckBalanceButton>잔액 조회</CheckBalanceButton>
+      <CheckBalanceButton>
+        잔액: {addComma(balance?.amount ?? "")}
+      </CheckBalanceButton>
     </AccountBox>
   );
 };

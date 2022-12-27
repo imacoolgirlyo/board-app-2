@@ -47,7 +47,7 @@ function App() {
       </ul>
       {bankUser && `Hello ${bankUser?.user_name}`}
       <div>
-        {(bankUser?.res_list ?? []).map((account) => (
+        {(bankUser?.res_list.slice(0, 2) ?? []).map((account) => (
           <Account
             key={account.fintech_use_num}
             fintechNum={account.fintech_use_num}
