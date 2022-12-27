@@ -7,6 +7,7 @@ import AuthGuard from "./AuthGuard";
 import Board from "./Board";
 import Login from "./Login";
 import reportWebVitals from "./reportWebVitals";
+import SignIn from "./SignIn";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     ),
   },
   { path: "/login", element: <Login /> },
+  { path: "/signIn", element: <SignIn /> },
 ]);
 root.render(
   <React.StrictMode>

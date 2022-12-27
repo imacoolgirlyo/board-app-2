@@ -70,7 +70,7 @@ export class OpenBankingOAuthController {
     const temporaryJwt = await this.jwtService.sign(user);
 
     return response.redirect(
-      `http://localhost:3000/login?tmp_access_token=${temporaryJwt}`,
+      `http://localhost:3000/signIn?tmp_access_token=${temporaryJwt}`,
     );
   }
 }
