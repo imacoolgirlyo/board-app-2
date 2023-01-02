@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
-import { OpenBankingOauthGuard } from '../openbanking/openbanking.guard';
+import { OpenBankingOauthGuard } from '../guards/openbanking.guard';
 import { LocalAuthGuard } from '../guards/local.auth.guard';
 
 @Controller('auth')
