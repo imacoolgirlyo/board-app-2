@@ -1,4 +1,4 @@
-import { IdentityProvider } from 'src/auth/socialProfile.model';
+import { IdentityProvider } from 'src/auth/authProfile';
 
 export interface User {
   id: string;

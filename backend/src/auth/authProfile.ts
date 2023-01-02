@@ -1,9 +1,14 @@
 import { OAuthProfile } from 'src/user/user.model';
-import { IdentityProvider } from './socialProfile.model';
 
 type Name = string | undefined;
 type Email = { value: string };
 type Photo = Email;
+
+export enum IdentityProvider {
+  FACEBOOK = 'facebook',
+  GOOGLE = 'google',
+  OPEN_BANKING = 'openBanking',
+}
 
 export interface IFacebookProfile {
   id: string;

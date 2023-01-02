@@ -2,9 +2,9 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { IdentityProvider, SocialProfile } from '../socialProfile.model';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { IdentityProvider } from '../authProfile';
 
 interface OpenBankingUserData {
   access_token: string;

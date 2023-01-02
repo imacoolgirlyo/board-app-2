@@ -1,4 +1,4 @@
-import { IdentityProvider } from 'src/auth/socialProfile.model';
+import { IdentityProvider } from 'src/auth/authProfile';
 import { Token } from 'src/token/token.entity';
 import {
   Column,
