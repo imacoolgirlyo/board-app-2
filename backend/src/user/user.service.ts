@@ -56,13 +56,6 @@ export class UserService {
     };
   }
 
-  async findById(id: string) {
-    const user = await this.userRepository.findOne({ where: { id } });
-    return {
-      id: user.id,
-    };
-  }
-
   async update(user: {
     id: string;
     name: string;
