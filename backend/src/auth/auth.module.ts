@@ -9,6 +9,8 @@ import { AuthService } from './local/auth.service';
 import { LocalAuthStrategy } from './local/local.auth.strategy';
 import { GoogleAuthController } from './google.auth.controller';
 import { GoogleStrategy } from './google.strategy';
+import { FacebookOAuthController } from './facebook/facebook.oauth.controller';
+import { FacebookStrategy } from './facebook/facebook.strategy';
 
 @Module({
   imports: [JwtAuthModule, UserModule, HttpModule],
@@ -16,12 +18,14 @@ import { GoogleStrategy } from './google.strategy';
     OpenBankingOAuthController,
     AuthController,
     GoogleAuthController,
+    FacebookOAuthController,
   ],
   providers: [
     OpenBankingStrategy,
     AuthService,
     LocalAuthStrategy,
     GoogleStrategy,
+    FacebookStrategy,
   ],
 })
 export class AuthModule {}

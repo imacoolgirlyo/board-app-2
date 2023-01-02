@@ -50,20 +50,15 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       profile.name.middleName ?? '',
     ].join(' ');
 
-    const facebookProfile: SocialProfile = {
-      id: profile.id,
-      name: profile.username ?? _name,
+    const user = await this.userService._findOrCreate({
+      localId: profile.id,
       provider: IdentityProvider.FACEBOOK,
       accessToken,
-      photo: profile.photos[0].value ?? undefined,
+      refreshToken,
       email: profile.emails[0].value,
-    };
-
-    const user = await this.userService.findOrCreate(facebookProfile);
-
-    if (!user) {
-      return null;
-    }
+      name: profile.username ?? _name,
+      photo: profile.photos[0].value ?? undefined,
+    });
 
     return user;
   }
