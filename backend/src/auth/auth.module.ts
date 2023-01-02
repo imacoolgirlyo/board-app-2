@@ -4,8 +4,7 @@ import { JwtAuthModule } from './jwt-auth.module';
 import { OpenBankingOAuthController } from './controllers/openbanking.oauth.controller';
 import { HttpModule } from '@nestjs/axios';
 import { AuthController } from './controllers/auth.controller';
-import { OpenBankingStrategy } from './strategies/openbanking.strategy';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { LocalAuthStrategy } from './strategies/local.auth.strategy';
 import { GoogleAuthController } from './controllers/google.auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
@@ -20,12 +19,6 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
     GoogleAuthController,
     FacebookOAuthController,
   ],
-  providers: [
-    OpenBankingStrategy,
-    AuthService,
-    LocalAuthStrategy,
-    GoogleStrategy,
-    FacebookStrategy,
-  ],
+  providers: [AuthService, LocalAuthStrategy, GoogleStrategy, FacebookStrategy],
 })
 export class AuthModule {}
