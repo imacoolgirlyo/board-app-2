@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-facebook';
+import { IUser } from 'src/user/user.model';
 import { UserService } from 'src/user/user.service';
 import { FacebookProfile, IFacebookProfile } from '../authProfile';
 
@@ -23,7 +24,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     accessToken: string,
     refreshToken: string,
     profile: IFacebookProfile,
-  ) {
+  ): Promise<IUser> {
     if (!profile) {
       return null;
     }
