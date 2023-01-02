@@ -2,10 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { ConfigService } from '@nestjs/config';
+import { UserService } from 'src/user/user.service';
+import { IdentityProvider } from './socialProfile.model';
+import { IUser } from 'src/user/user.model';
+
+interface GoogleProfile {
+  id: string;
+  displayName: string;
+  provider: string; // 'google'
+  name?: { familyName: string; givenName: string };
+  emails?: { value: string; verified: boolean }[];
+  photos?: { value: string }[];
+  _raw: string;
+  _json: {
+    sub: string;
+    name?: string;
+    given_name?: string;
+    family_name?: string;
+    picture?: string;
+    email?: string;
+    email_verified?: boolean;
+    locale?: string;
+    hd?: string;
+  };
+}
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(configService: ConfigService) {
+  constructor(configService: ConfigService, private userService: UserService) {
     super({
       clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
       clientSecret: configService.get<string>('GOOGLE_SECRET'),
@@ -15,18 +39,20 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   async validate(
-    _accessToken: string,
-    _refreshToken: string,
-    profile: any,
-  ): Promise<any> {
-    // Google OAuth 서버에서 유저 인증하고 난 뒤 전달해주는 callback
-    // 우리가 필요한 user 정보를 가져올 수 있음. 여기서 가져온 정보를 request object에 넣는다.
-    const { id, name, emails } = profile;
-    return {
-      provider: 'google',
-      providerId: id,
-      name: name.givenName,
-      username: emails[0].value,
-    };
+    accessToken: string,
+    refreshToken: string,
+    profile: GoogleProfile,
+  ): Promise<IUser> {
+    const user = await this.userService._findOrCreate({
+      localId: profile.id,
+      provider: IdentityProvider.GOOGLE,
+      accessToken,
+      refreshToken,
+      email: profile.emails[0].value,
+      name: `${profile.name.familyName ?? ''} ${profile.name.givenName ?? ''}`,
+      photo: profile.photos[0].value,
+    });
+
+    return user;
   }
 }

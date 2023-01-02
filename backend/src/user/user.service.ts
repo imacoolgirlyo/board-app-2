@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { IdentityProvider, SocialProfile } from 'src/auth/socialProfile.model';
+import { SocialProfile } from 'src/auth/socialProfile.model';
 import { TokenService } from 'src/token/token.service';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { User as UserModel } from './user.model';
+import { OAuthProfile, IUser as UserModel } from './user.model';
 
 @Injectable()
 export class UserService {
@@ -14,6 +14,48 @@ export class UserService {
     private userRepository: Repository<User>,
     private tokenService: TokenService,
   ) {}
+
+  async _findOrCreate(oauthProfile: OAuthProfile): Promise<UserModel> {
+    const user = await this.userRepository.findOneBy({
+      localId: oauthProfile.localId,
+    });
+
+    if (user) {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      };
+    }
+
+    const savedUser = await this.saveProfile(oauthProfile);
+
+    return savedUser;
+  }
+
+  async saveProfile(oauthProfile: OAuthProfile): Promise<UserModel> {
+    const tokenIssuedByIdentityProvider = await this.tokenService.save(
+      oauthProfile.accessToken,
+      oauthProfile.refreshToken,
+    );
+
+    const user = await this.userRepository.create({
+      name: oauthProfile.name,
+      email: oauthProfile.email,
+      photo: oauthProfile.photo,
+      provider: oauthProfile.provider,
+      localId: oauthProfile.localId,
+      token: tokenIssuedByIdentityProvider,
+    });
+
+    const saved = await this.userRepository.save(user);
+
+    return {
+      id: saved.id,
+      name: saved.name,
+      email: saved.email,
+    };
+  }
 
   async findOrCreate(profile: SocialProfile): Promise<UserModel> {
     const _user = await this.userRepository.findOneBy({ localId: profile.id });
@@ -35,22 +77,7 @@ export class UserService {
     return saved;
   }
 
-  async create(profile): Promise<{ id: string; provider: IdentityProvider }> {
-    const openBankingToken = await this.tokenService.create(profile.token);
-
-    const saved = await this.userRepository.save({
-      provider: profile.provider,
-      localId: profile.id,
-      token: openBankingToken,
-    });
-
-    return {
-      id: saved.id,
-      provider: saved.provider,
-    };
-  }
-
-  async findById(id: string): Promise<UserModel> {
+  async findById(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
     return {
       id: user.id,

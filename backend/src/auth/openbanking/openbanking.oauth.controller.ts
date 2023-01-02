@@ -66,11 +66,9 @@ export class OpenBankingOAuthController {
       },
     };
 
-    const user = await this.userService.create(openBankingProfile);
-    const temporaryJwt = await this.jwtService.sign(user);
+    // const user = await this.userService.create(openBankingProfile);
+    // const temporaryJwt = await this.jwtService.sign(user);
 
-    return response.redirect(
-      `http://localhost:3000/signIn?tmp_access_token=${temporaryJwt}`,
-    );
+    return response.redirect(`http://localhost:3000/signIn?tmp_access_token=`);
   }
 }

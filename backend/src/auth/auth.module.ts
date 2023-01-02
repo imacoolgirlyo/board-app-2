@@ -7,10 +7,21 @@ import { AuthController } from './local/auth.controller';
 import { OpenBankingStrategy } from './openbanking/openbanking.strategy';
 import { AuthService } from './local/auth.service';
 import { LocalAuthStrategy } from './local/local.auth.strategy';
+import { GoogleAuthController } from './google.auth.controller';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports: [JwtAuthModule, UserModule, HttpModule],
-  controllers: [OpenBankingOAuthController, AuthController],
-  providers: [OpenBankingStrategy, AuthService, LocalAuthStrategy],
+  controllers: [
+    OpenBankingOAuthController,
+    AuthController,
+    GoogleAuthController,
+  ],
+  providers: [
+    OpenBankingStrategy,
+    AuthService,
+    LocalAuthStrategy,
+    GoogleStrategy,
+  ],
 })
 export class AuthModule {}
