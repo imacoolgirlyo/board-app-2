@@ -43,6 +43,15 @@ export interface IGoogleProfile {
   };
 }
 
+export interface IOpenBankingProfile {
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  expires_in: number;
+  scope: string;
+  user_seq_no: string;
+}
+
 abstract class AuthProfile {
   profile: any;
   constructor(profile: any) {
@@ -140,5 +149,22 @@ export class GoogleProfile extends AuthProfile {
     return this.profile.emails.length > 0
       ? this.profile.emails[0].value
       : undefined;
+  }
+}
+
+export class OpenBankingProfile extends AuthProfile {
+  profile: IOpenBankingProfile;
+  constructor(profile: IOpenBankingProfile) {
+    super(profile);
+    this.profile = profile;
+  }
+  // TODO: expires at 도 추가해야함.
+  public convertToOAuthProfile(): OAuthProfile {
+    return {
+      localId: this.profile.user_seq_no,
+      accessToken: this.profile.access_token,
+      refreshToken: this.profile.refresh_token,
+      provider: IdentityProvider.OPEN_BANKING,
+    };
   }
 }

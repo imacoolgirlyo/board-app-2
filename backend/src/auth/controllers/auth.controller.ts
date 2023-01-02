@@ -1,8 +1,8 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
-import { OpenBankingOauthGuard } from '../guards/openbanking.guard';
 import { LocalAuthGuard } from '../guards/local.auth.guard';
+import { JwtAuthGuard } from '../guards/jwt.auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +12,7 @@ export class AuthController {
   ) {}
 
   @Post('signIn')
-  @UseGuards(OpenBankingOauthGuard)
+  @UseGuards(JwtAuthGuard)
   async signInWithEmail(
     @Req() req,
     @Body() updateDto: { name: string; email: string; password: string },
