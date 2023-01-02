@@ -3,23 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-facebook';
 import { UserService } from 'src/user/user.service';
-import { IdentityProvider, SocialProfile } from '../socialProfile.model';
-
-type Name = string | undefined;
-type Email = { value: string };
-type Photo = Email;
-
-interface FacebookProfile {
-  id: string;
-  username: Name;
-  name: { familyName: Name; givenName: Name; middleName: Name };
-  gender: Name;
-  profileUrl: Name;
-  emails: Email[];
-  photos: Photo[];
-  provider: 'facebook';
-  _raw: string;
-}
+import { FacebookProfile, IFacebookProfile } from '../authProfile';
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
@@ -38,27 +22,16 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   async validate(
     accessToken: string,
     refreshToken: string,
-    profile: FacebookProfile,
+    profile: IFacebookProfile,
   ) {
     if (!profile) {
       return null;
     }
+    const facebookProfile = new FacebookProfile(profile);
 
-    const _name = [
-      profile.name.familyName ?? '',
-      profile.name.givenName ?? '',
-      profile.name.middleName ?? '',
-    ].join(' ');
-
-    const user = await this.userService._findOrCreate({
-      localId: profile.id,
-      provider: IdentityProvider.FACEBOOK,
-      accessToken,
-      refreshToken,
-      email: profile.emails[0].value,
-      name: profile.username ?? _name,
-      photo: profile.photos[0].value ?? undefined,
-    });
+    const user = await this.userService._findOrCreate(
+      facebookProfile.convertToOAuthProfile(accessToken, refreshToken),
+    );
 
     return user;
   }
