@@ -9,6 +9,7 @@ import {
   OpenBankingProfile,
 } from '../authProfile';
 import { JwtAuthService } from '../services/jwt-auth.service';
+import { ValidateUserUseCase } from '../usecases/validateUser.usecase';
 
 @Controller('auth/open-banking')
 export class OpenBankingOAuthController {
@@ -17,6 +18,7 @@ export class OpenBankingOAuthController {
     private readonly configService: ConfigService,
     private readonly userService: UserService,
     private readonly jwtAuthService: JwtAuthService,
+    private validateUserUseCase: ValidateUserUseCase,
   ) {}
 
   @Get()
@@ -50,8 +52,11 @@ export class OpenBankingOAuthController {
     // signUp시에는 이 jwtAuthGuard로 막아놓으면 됨.
 
     const openBankingProfile = new OpenBankingProfile(data);
-    const user = await this.userService._findOrCreate(
-      openBankingProfile.convertToOAuthProfile(),
+    const oauthProfile = openBankingProfile.convertToOAuthProfile();
+    const user = await this.validateUserUseCase.execute(
+      oauthProfile,
+      oauthProfile.accessToken,
+      oauthProfile.refreshToken,
     );
 
     const { accessToken } = await this.jwtAuthService.login({

@@ -28,10 +28,6 @@ export class UserService {
       };
     }
 
-    // 이 함수의 가장 큰 문제는 계층이 같은 service 함수를 가져와서 썼다는 것임. 계층이 옆으로 참조하는게 아니라 아래의 함수를 사용해야함. 왜?
-
-    // 함수는 user, profile 둘다 다루고 있다. 함수가 해야할 역할이 사실 상 두개인 것임. (user 생성, 토큰 생성)
-    // user는 토큰에 대한 정보를 몰라도 된다. tokenService에서 다루는 token의 형태가 바뀌었을 때 userService까지 영향을 미치게 되는 것이다.
     const savedUser = await this.saveProfile(oauthProfile);
 
     return savedUser;
