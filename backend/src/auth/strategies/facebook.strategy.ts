@@ -5,12 +5,13 @@ import { Strategy } from 'passport-facebook';
 import { IUser } from 'src/user/user.model';
 import { UserService } from 'src/user/user.service';
 import { FacebookProfile, IFacebookProfile } from '../authProfile';
+import { ValidateUserUseCase } from '../usecases/validateUser.usecase';
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor(
     configService: ConfigService,
-    private readonly userService: UserService,
+    private validateUserUseCase: ValidateUserUseCase,
   ) {
     super({
       clientID: configService.get<string>('FACEBOOK_CLIENT_ID'),
@@ -30,8 +31,10 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     }
     const facebookProfile = new FacebookProfile(profile);
 
-    const user = await this.userService._findOrCreate(
+    const user = await this.validateUserUseCase.execute(
       facebookProfile.convertToOAuthProfile(accessToken, refreshToken),
+      accessToken,
+      refreshToken,
     );
 
     return user;
