@@ -41,3 +41,14 @@ Learned
   - back channel request 방식을 사용하면 OAuth server에서 발급해주는 access token을 브라우저를 통하지 않고 server application이 직접 받기 때문에 보안성 더 안전하다고 볼 수 있음
   - 출처: https://www.passportjs.org/concepts/oauth2/token/
   - https://www.deepnetwork.com/blog//2019/11/08/oauth2-oicd-pkce.html
+
+## Let's refactoring the code!
+
+- 문제
+  - 새로운 oauth를 붙이니 다른 oauth provider와 혼용이 안됨.
+  - 현재 각 서비스의 역할이 잘 정의되어 있지 않아 관리가 안됨. (auth.service, jwt-auth.service 의 차이?)
+  - Oauth Identity Provider에서 제공하는 user의 값이 달라서 현재 도메인에서 공통적으로 사용할만한 User Model이 필요 ✅
+  - jwt token이 만료되었을 때 사용할 수 있는 refresh token을 전달하고 있지 않다.
+  - controller에서 서비스 로직을 실행하는 경우가 있음
+  - user.service의 method에서 전달하는 값이 제각각임.
+  - 테스트 코드가 없음

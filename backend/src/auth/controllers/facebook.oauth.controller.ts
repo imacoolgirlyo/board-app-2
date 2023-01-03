@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
-import { FacebookOauthGuard } from './facebook.oauth.guard';
+import { FacebookOauthGuard } from '../guards/facebook.oauth.guard';
 import { Response } from 'express';
-import { JwtAuthService } from '../jwt-auth.service';
+import { JwtAuthService } from '../services/jwt-auth.service';
 
 @Controller('auth/facebook')
 export class FacebookOAuthController {

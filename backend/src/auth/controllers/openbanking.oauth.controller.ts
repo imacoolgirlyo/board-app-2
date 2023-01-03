@@ -2,18 +2,13 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { IdentityProvider, SocialProfile } from '../socialProfile.model';
 import { UserService } from 'src/user/user.service';
-import { JwtService } from '@nestjs/jwt';
-
-interface OpenBankingUserData {
-  access_token: string;
-  token_type: string;
-  refresh_token: string;
-  expires_in: number;
-  scope: string;
-  user_seq_no: string;
-}
+import {
+  IdentityProvider,
+  IOpenBankingProfile,
+  OpenBankingProfile,
+} from '../authProfile';
+import { JwtAuthService } from '../services/jwt-auth.service';
 
 @Controller('auth/open-banking')
 export class OpenBankingOAuthController {
@@ -21,7 +16,7 @@ export class OpenBankingOAuthController {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    private readonly jwtAuthService: JwtAuthService,
   ) {}
 
   @Get()
@@ -42,7 +37,7 @@ export class OpenBankingOAuthController {
       grant_type: 'authorization_code',
     };
 
-    const { data } = await this.httpService.axiosRef.post<OpenBankingUserData>(
+    const { data } = await this.httpService.axiosRef.post<IOpenBankingProfile>(
       `${openBankingUrl}/oauth/2.0/token`,
       config,
       {
@@ -52,25 +47,20 @@ export class OpenBankingOAuthController {
       },
     );
 
-    const openBankingProfile = {
-      id: data.user_seq_no,
-      name: '',
-      email: '',
-      provider: IdentityProvider.OPEN_BANKING,
-      token: {
-        access_token: data.access_token,
-        refresh_token: data.refresh_token,
-        expires_in: data.expires_in,
-        scope: data.scope,
-        token_type: data.token_type,
-      },
-    };
+    // signUp시에는 이 jwtAuthGuard로 막아놓으면 됨.
 
-    const user = await this.userService.create(openBankingProfile);
-    const temporaryJwt = await this.jwtService.sign(user);
+    const openBankingProfile = new OpenBankingProfile(data);
+    const user = await this.userService._findOrCreate(
+      openBankingProfile.convertToOAuthProfile(),
+    );
+
+    const { accessToken } = await this.jwtAuthService.login({
+      id: user.id,
+      name: user.name,
+    });
 
     return response.redirect(
-      `http://localhost:3000/signIn?tmp_access_token=${temporaryJwt}`,
+      `http://localhost:3000/signIn?tmp_access_token=${accessToken}`,
     );
   }
 }
