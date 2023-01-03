@@ -2,12 +2,7 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { UserService } from 'src/user/user.service';
-import {
-  IdentityProvider,
-  IOpenBankingProfile,
-  OpenBankingProfile,
-} from '../authProfile';
+import { IOpenBankingProfile, OpenBankingProfile } from '../authProfile';
 import { JwtAuthService } from '../services/jwt-auth.service';
 import { ValidateUserUseCase } from '../usecases/validateUser.usecase';
 
@@ -16,7 +11,6 @@ export class OpenBankingOAuthController {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
-    private readonly userService: UserService,
     private readonly jwtAuthService: JwtAuthService,
     private validateUserUseCase: ValidateUserUseCase,
   ) {}
