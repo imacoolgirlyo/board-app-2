@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Token } from 'src/token/token.entity';
-import { TokenService } from 'src/token/token.service';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { OAuthProfile, IUser as UserModel } from './user.model';
@@ -12,50 +11,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private tokenService: TokenService,
   ) {}
-
-  async _findOrCreate(oauthProfile: OAuthProfile): Promise<UserModel> {
-    const user = await this.userRepository.findOneBy({
-      localId: oauthProfile.localId,
-    });
-
-    if (user) {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      };
-    }
-
-    const savedUser = await this.saveProfile(oauthProfile);
-
-    return savedUser;
-  }
-
-  async saveProfile(oauthProfile: OAuthProfile): Promise<UserModel> {
-    const tokenIssuedByIdentityProvider = await this.tokenService.save(
-      oauthProfile.accessToken,
-      oauthProfile.refreshToken,
-    );
-
-    const user = await this.userRepository.create({
-      name: oauthProfile.name,
-      email: oauthProfile.email,
-      photo: oauthProfile.photo,
-      provider: oauthProfile.provider,
-      localId: oauthProfile.localId,
-      token: tokenIssuedByIdentityProvider,
-    });
-
-    const saved = await this.userRepository.save(user);
-
-    return {
-      id: saved.id,
-      name: saved.name,
-      email: saved.email,
-    };
-  }
 
   async createUser(profile: OAuthProfile, token: Token): Promise<UserModel> {
     const user = await this.userRepository.create({
