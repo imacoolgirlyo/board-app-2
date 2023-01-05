@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-facebook';
 import { IUser } from 'src/user/user.model';
-import { UserService } from 'src/user/user.service';
 import { FacebookProfile, IFacebookProfile } from '../authProfile';
 import { ValidateUserUseCase } from '../usecases/validateUser.usecase';
 

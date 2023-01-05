@@ -1,5 +1,4 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { LocalAuthGuard } from '../guards/local.auth.guard';
 import { JwtAuthGuard } from '../guards/jwt.auth.guard';
@@ -9,7 +8,6 @@ import { JwtAuthService } from '../services/jwt-auth.service';
 export class AuthController {
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
     private readonly jwtAuthService: JwtAuthService,
   ) {}
 
