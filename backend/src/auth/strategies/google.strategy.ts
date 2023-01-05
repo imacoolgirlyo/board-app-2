@@ -29,9 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const googleProfile = new GoogleProfile(profile);
 
     const user = await this.validateUserUseCase.execute(
-      googleProfile.convertToOAuthProfile(accessToken, refreshToken), // TODO: 변경
-      accessToken,
-      refreshToken,
+      googleProfile.convertToOAuthProfile(accessToken, refreshToken),
     );
 
     return user;

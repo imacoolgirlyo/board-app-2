@@ -33,8 +33,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
 
     const user = await this.validateUserUseCase.execute(
       facebookProfile.convertToOAuthProfile(accessToken, refreshToken),
-      accessToken,
-      refreshToken,
     );
 
     return user;

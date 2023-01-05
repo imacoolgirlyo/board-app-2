@@ -10,11 +10,7 @@ export class ValidateUserUseCase {
     private tokenService: TokenService,
   ) {}
 
-  async execute(
-    profile: OAuthProfile,
-    accessToken: string,
-    refreshToken: string,
-  ): Promise<IUser> {
+  async execute(profile: OAuthProfile): Promise<IUser> {
     const user = await this.userService.findOne({ localId: profile.localId });
 
     if (user) {
@@ -25,7 +21,10 @@ export class ValidateUserUseCase {
       };
     }
 
-    const savedToken = await this.tokenService.save(accessToken, refreshToken);
+    const savedToken = await this.tokenService.save(
+      profile.accessToken,
+      profile.refreshToken,
+    );
     const savedUser = await this.userService.createUser(profile, savedToken);
 
     return savedUser;

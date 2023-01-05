@@ -43,15 +43,9 @@ export class OpenBankingOAuthController {
       },
     );
 
-    // signUp시에는 이 jwtAuthGuard로 막아놓으면 됨.
-
     const openBankingProfile = new OpenBankingProfile(data);
     const oauthProfile = openBankingProfile.convertToOAuthProfile();
-    const user = await this.validateUserUseCase.execute(
-      oauthProfile,
-      oauthProfile.accessToken,
-      oauthProfile.refreshToken,
-    );
+    const user = await this.validateUserUseCase.execute(oauthProfile);
 
     const { accessToken } = await this.jwtAuthService.login({
       id: user.id,
