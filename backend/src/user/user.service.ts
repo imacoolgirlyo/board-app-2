@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { TokenService } from 'src/token/token.service';
+import { Token } from 'src/token/token.entity';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { OAuthProfile, IUser as UserModel } from './user.model';
@@ -11,40 +11,16 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private tokenService: TokenService,
   ) {}
 
-  async _findOrCreate(oauthProfile: OAuthProfile): Promise<UserModel> {
-    const user = await this.userRepository.findOneBy({
-      localId: oauthProfile.localId,
-    });
-
-    if (user) {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      };
-    }
-
-    const savedUser = await this.saveProfile(oauthProfile);
-
-    return savedUser;
-  }
-
-  async saveProfile(oauthProfile: OAuthProfile): Promise<UserModel> {
-    const tokenIssuedByIdentityProvider = await this.tokenService.save(
-      oauthProfile.accessToken,
-      oauthProfile.refreshToken,
-    );
-
+  async createUser(profile: OAuthProfile, token: Token): Promise<UserModel> {
     const user = await this.userRepository.create({
-      name: oauthProfile.name,
-      email: oauthProfile.email,
-      photo: oauthProfile.photo,
-      provider: oauthProfile.provider,
-      localId: oauthProfile.localId,
-      token: tokenIssuedByIdentityProvider,
+      name: profile.name,
+      email: profile.email,
+      photo: profile.photo,
+      provider: profile.provider,
+      localId: profile.localId,
+      token,
     });
 
     const saved = await this.userRepository.save(user);
@@ -89,7 +65,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: condition });
 
     if (!user) {
-      throw new Error('Can not find user.');
+      return null; // service에서는 error를 던지지 않나 보통?
     }
 
     // TODO: user 모델 통일 필요

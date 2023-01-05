@@ -2,21 +2,17 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { UserService } from 'src/user/user.service';
-import {
-  IdentityProvider,
-  IOpenBankingProfile,
-  OpenBankingProfile,
-} from '../authProfile';
+import { IOpenBankingProfile, OpenBankingProfile } from '../authProfile';
 import { JwtAuthService } from '../services/jwt-auth.service';
+import { ValidateUserUseCase } from '../usecases/validateUser.usecase';
 
 @Controller('auth/open-banking')
 export class OpenBankingOAuthController {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
-    private readonly userService: UserService,
     private readonly jwtAuthService: JwtAuthService,
+    private validateUserUseCase: ValidateUserUseCase,
   ) {}
 
   @Get()
@@ -47,12 +43,9 @@ export class OpenBankingOAuthController {
       },
     );
 
-    // signUp시에는 이 jwtAuthGuard로 막아놓으면 됨.
-
     const openBankingProfile = new OpenBankingProfile(data);
-    const user = await this.userService._findOrCreate(
-      openBankingProfile.convertToOAuthProfile(),
-    );
+    const oauthProfile = openBankingProfile.convertToOAuthProfile();
+    const user = await this.validateUserUseCase.execute(oauthProfile);
 
     const { accessToken } = await this.jwtAuthService.login({
       id: user.id,

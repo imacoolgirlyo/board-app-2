@@ -10,9 +10,11 @@ import { GoogleAuthController } from './controllers/google.auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { FacebookOAuthController } from './controllers/facebook.oauth.controller';
 import { FacebookStrategy } from './strategies/facebook.strategy';
+import { ValidateUserUseCase } from './usecases/validateUser.usecase';
+import { TokenModule } from 'src/token/token.module';
 
 @Module({
-  imports: [JwtAuthModule, UserModule, HttpModule],
+  imports: [JwtAuthModule, UserModule, HttpModule, TokenModule],
   controllers: [
     OpenBankingOAuthController,
     AuthController,
@@ -24,6 +26,7 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
     LocalAuthStrategy,
     GoogleStrategy,
     FacebookStrategy,
+    ValidateUserUseCase,
   ],
 })
 export class AuthModule {}

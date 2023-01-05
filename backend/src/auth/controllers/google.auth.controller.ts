@@ -8,10 +8,8 @@ export class GoogleAuthController {
   constructor(private readonly jwtAuthService: JwtAuthService) {}
 
   @Get()
-  @UseGuards(GoogleOauthGuard) // ?: Strategy만 연결했는데 어떻게 google oauth server로 찾아가는거지?
-  async googleAuth(@Req() req) {
-    // Guard가 Redirect 함
-  }
+  @UseGuards(GoogleOauthGuard)
+  async googleAuth(@Req() req) {}
 
   @Get('redirect')
   @UseGuards(GoogleOauthGuard)

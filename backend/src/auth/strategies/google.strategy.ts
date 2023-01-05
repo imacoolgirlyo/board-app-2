@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { ConfigService } from '@nestjs/config';
-import { UserService } from 'src/user/user.service';
 import { IUser } from 'src/user/user.model';
 import { GoogleProfile, IGoogleProfile } from '../authProfile';
+import { ValidateUserUseCase } from '../usecases/validateUser.usecase';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(configService: ConfigService, private userService: UserService) {
+  constructor(
+    configService: ConfigService,
+    private validateUserUseCase: ValidateUserUseCase,
+  ) {
     super({
       clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
       clientSecret: configService.get<string>('GOOGLE_SECRET'),
@@ -24,7 +27,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ): Promise<IUser> {
     const googleProfile = new GoogleProfile(profile);
 
-    const user = await this.userService._findOrCreate(
+    const user = await this.validateUserUseCase.execute(
       googleProfile.convertToOAuthProfile(accessToken, refreshToken),
     );
 
