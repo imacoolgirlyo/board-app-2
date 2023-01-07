@@ -1,3 +1,4 @@
+import { it } from "node:test";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -10,15 +11,21 @@ interface Item {
 const itemList = [
   {
     name: "Nike shoes",
-    price: 300,
+    price: 30,
     photoUrl:
       "https://static.nike.com/a/images/t_default/aac777fa-ef84-488a-86b0-e8a1c7b52bad/pegasus-39-mens-road-running-shoes-jXTgc9.png",
   },
   {
     name: "iPad",
-    price: 800,
+    price: 80,
     photoUrl:
       "https://images.immediate.co.uk/production/volatile/sites/3/2022/03/iPad-Air-5-main--190e689.jpg?quality=90&resize=620,414",
+  },
+  {
+    name: "Sofa",
+    price: 100,
+    photoUrl:
+      "https://www.ikea.com/kr/en/images/products/soederhamn-3-seat-sofa-viarp-beige-brown__0802692_pe768543_s5.jpg?f=s",
   },
 ];
 
@@ -26,10 +33,10 @@ const Mart = () => {
   const [items, setItems] = useState<Item[]>(itemList);
   const [shoppingCart, setShoppingCart] = useState<Item[]>([]);
 
+  function findItemsById(id: any) {
+    return items.find((item, index) => index === id);
+  }
   const handleBuyNowButton = (id: number) => {
-    function findItemsById(id: any) {
-      return items.find((item, index) => index === id);
-    }
     const item = findItemsById(id);
 
     if (item) {
@@ -47,6 +54,15 @@ const Mart = () => {
     return total;
   };
 
+  // 만약에 카트에 있는 금액이 100이 넘는다면 무료 아이콘 붙여주기
+  const checkCartTotalisOver100 = (id: number, shoppingCart: Item[]) => {
+    const item = findItemsById(id);
+
+    if (item) {
+      return calculateCartTotal(shoppingCart) + item?.price >= 100;
+    }
+  };
+
   return (
     <Block>
       <Header>
@@ -61,6 +77,9 @@ const Mart = () => {
               <Name>{item.name}</Name>
               <PriceTag>${item.price}</PriceTag>
               <button onClick={() => handleBuyNowButton(id)}>Buy Now</button>
+              {checkCartTotalisOver100(id, shoppingCart) && (
+                <div>배송비 무료!</div>
+              )}
             </div>
           </Item>
         ))}
