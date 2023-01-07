@@ -6,6 +6,7 @@ import App from "./App";
 import AuthGuard from "./AuthGuard";
 import Board from "./Board";
 import Login from "./Login";
+import Mart from "./Mart";
 import reportWebVitals from "./reportWebVitals";
 import SignIn from "./SignIn";
 
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
   },
   { path: "/login", element: <Login /> },
   { path: "/signIn", element: <SignIn /> },
+  { path: "/mart", element: <Mart /> },
 ]);
 root.render(
   <React.StrictMode>

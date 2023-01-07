@@ -8,6 +8,9 @@ function App() {
         <li>
           <a href="/boards">Let me show my boards</a>
         </li>
+        <li>
+          <a href="/mart">Let Go Mart</a>
+        </li>
       </ul>
     </div>
   );
