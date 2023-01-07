@@ -23,7 +23,7 @@ const itemList = [
   },
   {
     name: "Sofa",
-    price: 100,
+    price: 50,
     photoUrl:
       "https://www.ikea.com/kr/en/images/products/soederhamn-3-seat-sofa-viarp-beige-brown__0802692_pe768543_s5.jpg?f=s",
   },
@@ -36,11 +36,20 @@ const Mart = () => {
   function findItemsById(id: any) {
     return items.find((item, index) => index === id);
   }
+
+  const addItem = (shoppingCart: Item[], item: Item) => {
+    const cart = [...shoppingCart];
+    cart.push(item);
+
+    return cart;
+  };
+
   const handleBuyNowButton = (id: number) => {
     const item = findItemsById(id);
 
     if (item) {
-      setShoppingCart((cart) => [...cart, item]);
+      const updatedCart = addItem(shoppingCart, item);
+      setShoppingCart(updatedCart);
     }
   };
 
