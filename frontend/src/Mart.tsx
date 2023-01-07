@@ -72,11 +72,20 @@ const Mart = () => {
     }
   };
 
+  const calculateTaxTotal = (amount: number) => {
+    return amount * 0.1;
+  };
+
   return (
     <Block>
       <Header>
         <div>MegaMart</div>
-        <CartTotal>{calculateCartTotal(shoppingCart)}</CartTotal>
+        <div>
+          <CartTotal>total: ${calculateCartTotal(shoppingCart)}</CartTotal>
+          <TaxTotal>
+            tax: ${calculateTaxTotal(calculateCartTotal(shoppingCart))}
+          </TaxTotal>
+        </div>
       </Header>
       <ItemList>
         {items.map((item, id) => (
@@ -98,6 +107,7 @@ const Mart = () => {
 };
 
 const CartTotal = styled.div``;
+const TaxTotal = styled.div``;
 
 const Item = styled.li`
   display: flex;
