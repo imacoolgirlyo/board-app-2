@@ -68,9 +68,12 @@ const Mart = () => {
     const item = findItemsById(id);
 
     if (item) {
-      return calculateCartTotal(shoppingCart) + item?.price >= 100;
+      return canFreeShopping(calculateCartTotal(shoppingCart), item?.price);
     }
   };
+
+  const canFreeShopping = (amount: number, price: number) =>
+    amount + price >= 100;
 
   const calculateTaxTotal = (amount: number) => {
     return amount * 0.1;
